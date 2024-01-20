@@ -1,0 +1,37 @@
+build_lib(
+  LIBNAME sr-nemo
+  SOURCE_FILES
+    helper/sr-helper.cc
+    model/bcache.cc
+    model/blist.cc
+    model/cn.cc
+    model/ha.cc
+    model/sr-agent.cc
+    model/sr-demux.cc
+    model/sr-header.cc
+    model/sr-l4-protocol.cc
+    model/sr-mn.cc
+    model/sr-mobility.cc
+    model/sr-option-demux.cc
+    model/sr-option-header.cc
+    model/sr-option.cc
+    model/sr-tun-l4-protocol.cc
+    model/tunnel-net-device.h
+  HEADER_FILES
+    helper/sr-helper.h
+    model/bcache.h
+    model/blist.h
+    model/cn.h
+    model/ha.h
+    model/sr-agent.h
+    model/sr-demux.h
+    model/sr-header.h
+    model/sr-l4-protocol.h
+    model/sr-mn.h
+    model/sr-mobility.h
+    model/sr-option-demux.h
+    model/sr-option-header.h
+    model/sr-option.h
+    model/sr-tun-l4-protocol.h
+    model/tunnel-net-device.h
+)
