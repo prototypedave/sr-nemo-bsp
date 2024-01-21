@@ -95,7 +95,7 @@ namespace ns3 {
     class NrConfig : public Object{
     private:
         std::string bs_id;
-        float bitrate = 80000;  // max of 10GBps for 4G
+        float bitrate = 80000;  // max of 10GBps for 5G
         float avg_speed = 60;
         uint32_t m_connected;
     public:
@@ -143,4 +143,100 @@ namespace ns3 {
         return false;
     }
     };
-}
+
+    class MicroConfig : public Object{
+        private:
+            std::string bs_id;
+            float bitrate = 1000;  // max of 1GBps for 5G micro
+            uint16_t m_capacity;
+            uint32_t m_connected;
+            float max_distance = 300;  // bs coverage distance in meters
+            float max_area = 90000; // 300 by 300
+        public:
+        MicroConfig () {   
+        }
+
+        ~MicroConfig () {   
+        }
+
+        static TypeId
+        GetTypeId (void) {
+            static TypeId tid = TypeId ("ns3::MicroConfig")
+                .SetParent<Object> ()
+                .AddConstructor<MicroConfig> ();
+                return tid;
+        }
+
+        TypeId
+        GetInstanceTypeId (void) const {
+            return GetTypeId ();
+        }
+
+        void
+        SetConnectedDevices(uint32_t dv) {
+            m_connected = dv;
+        }
+
+        uint32_t
+        GetConnectedDevices() {
+            return m_connected;
+        }
+
+        void
+        SetCapacity(uint16_t cp) {
+            m_capacity = cp;
+        }
+
+        uint16_t
+        GetCapacity() {
+            return m_capacity;
+        }
+
+        float
+        CalculateSignalUsage() {
+            float avg_speed = bitrate / m_capacity;
+            return avg_speed;
+        }
+
+        bool
+        CheckSignalStrength(float dist) {
+            if (dist > max_distance) {
+                return true;
+            }
+            else if (CalculateSignalUsage() < 10.0) {
+                return true;
+            }
+
+            return false;
+        }
+    };
+
+    class MacroConfig : public MicroConfig{
+        private:
+            std::string bs_id;
+            float bitrate = 80000;  // max of 10GBps for 5G macro
+            uint16_t m_capacity;
+            uint32_t m_connected;
+            float max_distance = 10000;  // bs coverage distance in meters
+            float max_area = 100000000; // 10km by 10km
+        public:
+        MacroConfig () {   
+        }
+
+        ~MacroConfig () {   
+        }
+
+        static TypeId
+        GetTypeId (void) {
+            static TypeId tid = TypeId ("ns3::MacroConfig")
+                .SetParent<Object> ()
+                .AddConstructor<MacroConfig> ();
+                return tid;
+        }
+
+        TypeId
+        GetInstanceTypeId (void) const {
+            return GetTypeId ();
+        }
+    };
+} // ns3 namespace
