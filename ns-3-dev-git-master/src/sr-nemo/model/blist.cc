@@ -88,7 +88,7 @@ void BList::FunctionHomeRefreshTimeout ()
   NS_LOG_FUNCTION (this);
   Ptr<Mipv6Mn> mn = GetNode ()->GetObject<Mipv6Mn> ();
 
-  if (mn == 0)
+  if (!mn)
     {
       NS_LOG_WARN ("No MN for Binding Update List");
 
@@ -119,7 +119,7 @@ void BList::FunctionHomeReachableTimeout ()
 
   NS_LOG_LOGIC ("Reachable Timeout");
 
-  if ( mn == 0)
+  if (!mn)
     {
       NS_LOG_WARN ("No MN for Binding Update List");
 
@@ -148,7 +148,7 @@ void BList::FunctionHomeRetransTimeout ()
   NS_LOG_FUNCTION (this);
   Ptr<Mipv6Mn> mn = GetNode ()->GetObject<Mipv6Mn>();
 
-  if ( mn == 0)
+  if (!mn)
     {
       NS_LOG_WARN ("No MN for Binding Update List");
 
@@ -447,7 +447,7 @@ void BList::FunctionCNRefreshTimeout ()
   NS_LOG_FUNCTION (this);
   Ptr<Mipv6Mn> mn = GetNode ()->GetObject<Mipv6Mn> ();
 
-  if (mn == 0)
+  if (!mn)
     {
       NS_LOG_WARN ("No MN for Binding Update List");
 
@@ -477,7 +477,7 @@ void BList::FunctionCNReachableTimeout ()
 
   NS_LOG_LOGIC ("Reachable Timeout");
 
-  if ( mn == 0)
+  if (!mn)
     {
       NS_LOG_WARN ("No MN for Binding Update List");
 
@@ -500,7 +500,7 @@ void BList::FunctionCNRetransTimeout ()
   NS_LOG_FUNCTION (this);
   Ptr<Mipv6Mn> mn = GetNode ()->GetObject<Mipv6Mn>();
 
-  if ( mn == 0)
+  if (!mn)
     {
       NS_LOG_WARN ("No MN for Binding Update List");
 
@@ -526,7 +526,7 @@ void BList::FunctionHoTIRetransTimeout ()
   NS_LOG_FUNCTION (this);
   Ptr<Mipv6Mn> mn = GetNode ()->GetObject<Mipv6Mn>();
 
-  if ( mn == 0)
+  if (!mn)
     {
       NS_LOG_WARN ("No MN for Binding Update List");
 
@@ -552,7 +552,7 @@ void BList::FunctionCoTIRetransTimeout ()
   NS_LOG_FUNCTION (this);
   Ptr<Mipv6Mn> mn = GetNode ()->GetObject<Mipv6Mn>();
 
-  if ( mn == 0)
+  if (!mn)
     {
       NS_LOG_WARN ("No MN for Binding Update List");
 

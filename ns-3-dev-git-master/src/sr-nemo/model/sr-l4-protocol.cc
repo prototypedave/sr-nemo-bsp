@@ -73,13 +73,13 @@ void Mipv6L4Protocol::DoDispose ()
 void Mipv6L4Protocol::NotifyNewAggregate ()
 {
   NS_LOG_FUNCTION (this);
-  if (m_node == 0)
+  if (m_node)
     {
       Ptr<Node> node = this->GetObject<Node> ();
-      if (node != 0)
+      if (!node)
         {
           Ptr<Ipv6L3Protocol> ipv6 = this->GetObject<Ipv6L3Protocol> ();
-          if (ipv6 != 0)
+          if (!ipv6)
             {
               this->SetNode (node);
               ipv6->Insert (this);
@@ -118,7 +118,7 @@ void Mipv6L4Protocol::SendMessage (Ptr<Packet> packet, Ipv6Address src, Ipv6Addr
   NS_LOG_FUNCTION (this << packet << src << dst << (uint32_t)ttl);
   Ptr<Ipv6L3Protocol> ipv6 = m_node->GetObject<Ipv6L3Protocol> ();
   SocketIpTtlTag tag;
-  NS_ASSERT (ipv6 != 0);
+  NS_ASSERT (!ipv6);
 
   tag.SetTtl (ttl);
   packet->AddPacketTag (tag);

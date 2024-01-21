@@ -138,7 +138,7 @@ void Mipv6Agent::SendMessage (Ptr<Packet> packet, Ipv6Address dst, uint32_t ttl)
 
   Ptr<Ipv6L3Protocol> ipv6 = m_node->GetObject<Ipv6L3Protocol> ();
 
-  NS_ASSERT (ipv6 != 0 && ipv6->GetRoutingProtocol () != 0);
+  NS_ASSERT (!ipv6 && !ipv6->GetRoutingProtocol ());
 
   Ipv6Header header;
   SocketIpTtlTag tag;
@@ -149,7 +149,7 @@ void Mipv6Agent::SendMessage (Ptr<Packet> packet, Ipv6Address dst, uint32_t ttl)
   header.SetDestination (dst);
   route = ipv6->GetRoutingProtocol ()->RouteOutput (packet, header, oif, err);
 
-  if (route != 0)
+  if (!route)
     {
       tag.SetTtl (ttl);
       packet->AddPacketTag (tag);

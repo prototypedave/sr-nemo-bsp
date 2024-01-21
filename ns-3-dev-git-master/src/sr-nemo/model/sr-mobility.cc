@@ -52,7 +52,7 @@ uint8_t Mipv6Mobility::ProcessOptions (Ptr<Packet> packet, uint8_t offset, uint8
   p->RemoveAtStart (offset);
 
   Ptr<Mipv6OptionDemux> ipv6MobilityOptionDemux = GetNode ()->GetObject<Mipv6OptionDemux>();
-  NS_ASSERT (ipv6MobilityOptionDemux != 0);
+  NS_ASSERT (!ipv6MobilityOptionDemux);
 
   Ptr<Mipv6Option> ipv6MobilityOption = 0;
 
@@ -70,7 +70,7 @@ uint8_t Mipv6Mobility::ProcessOptions (Ptr<Packet> packet, uint8_t offset, uint8
 
       ipv6MobilityOption = ipv6MobilityOptionDemux->GetOption ( optType );
 
-      if ( ipv6MobilityOption == 0 )
+      if (!ipv6MobilityOption)
         {
           if ( optType == 0 )
             {

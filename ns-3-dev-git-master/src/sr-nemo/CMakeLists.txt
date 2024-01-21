@@ -2,6 +2,7 @@ build_lib(
   LIBNAME sr-nemo
   SOURCE_FILES
     helper/sr-helper.cc
+    model/ar.cc
     model/bcache.cc
     model/blist.cc
     model/cn.cc

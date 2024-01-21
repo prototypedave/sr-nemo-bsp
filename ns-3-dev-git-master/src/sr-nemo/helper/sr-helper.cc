@@ -43,7 +43,7 @@ Mipv6HaHelper::Install (Ptr<Node> node)
   m_node = node;
   Ptr<Mipv6L4Protocol> mipv6 = node->GetObject<Mipv6L4Protocol> ();
 
-  if (mipv6 == 0)
+  if (!mipv6)
     {
       mipv6 = CreateObject<Mipv6L4Protocol> ();
   
@@ -58,7 +58,7 @@ Mipv6HaHelper::Install (Ptr<Node> node)
 
   Ptr<Ipv6TunnelL4Protocol> ip6tunnel = node->GetObject<Ipv6TunnelL4Protocol> ();
   
-  if ( ip6tunnel == 0 )
+  if (!ip6tunnel)
     {
       ip6tunnel = CreateObject<Ipv6TunnelL4Protocol> ();
 	  
@@ -81,7 +81,7 @@ Mipv6HaHelper::Install (Ptr<Node> node)
 std::list<Ipv6Address> Mipv6HaHelper::GetHomeAgentAddressList ()
 {
   Ptr<Mipv6Ha> ha = m_node->GetObject<Mipv6Ha> ();
-  NS_ASSERT (ha != 0);  // must install mipv6ha before
+  NS_ASSERT (!ha);  // must install mipv6ha before
   return ha->HomeAgentAddressList ();
 }
 
@@ -125,7 +125,7 @@ Mipv6MnHelper::Install (Ptr<Node> node) const
 {
   Ptr<Mipv6L4Protocol> mipv6 = node->GetObject<Mipv6L4Protocol> ();
 
-  if (mipv6 == 0)
+  if (!mipv6)
     {
       mipv6 = CreateObject<Mipv6L4Protocol> ();
   
@@ -140,7 +140,7 @@ Mipv6MnHelper::Install (Ptr<Node> node) const
 
   Ptr<Ipv6TunnelL4Protocol> ip6tunnel = node->GetObject<Ipv6TunnelL4Protocol> ();
   
-  if ( ip6tunnel == 0 )
+  if (!ip6tunnel)
     {
       ip6tunnel = CreateObject<Ipv6TunnelL4Protocol> ();
 	  
@@ -180,7 +180,7 @@ Mipv6CnHelper::Install (Ptr<Node> node) const
 {
   Ptr<Mipv6L4Protocol> mipv6 = node->GetObject<Mipv6L4Protocol> ();
 
-  if (mipv6 == 0)
+  if (!mipv6)
     {
       mipv6 = CreateObject<Mipv6L4Protocol> ();
   
