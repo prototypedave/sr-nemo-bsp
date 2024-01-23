@@ -646,6 +646,129 @@ uint32_t Ipv6ExtensionType2RoutingHeader::Deserialize (Buffer::Iterator start)
   return GetSerializedSize ();
 }
 
+NS_OBJECT_ENSURE_REGISTERED(Ipv6ExtensionSegmentRoutingHeader);
+
+TypeId
+Ipv6ExtensionSegmentRoutingHeader::GetTypeId()
+{
+    static TypeId tid = TypeId("ns3::Ipv6ExtensionSegmentRoutingHeader")
+                            .AddConstructor<Ipv6ExtensionSegmentRoutingHeader>()
+                            .SetParent<Ipv6ExtensionRoutingHeader>()
+                            .SetGroupName("Internet");
+    return tid;
+}
+
+TypeId
+Ipv6ExtensionSegmentRoutingHeader::GetInstanceTypeId() const
+{
+    return GetTypeId();
+}
+
+Ipv6ExtensionSegmentRoutingHeader::Ipv6ExtensionSegmentRoutingHeader()
+    : m_routersSegments(0)
+{
+}
+
+Ipv6ExtensionSegmentRoutingHeader::~Ipv6ExtensionSegmentRoutingHeader()
+{
+}
+
+void
+Ipv6ExtensionSegmentRoutingHeader::SetNumberSegments(uint8_t n)
+{
+    m_routersSegments.clear();
+    m_routersSegments.assign(n, "");
+}
+
+void
+Ipv6ExtensionSegmentRoutingHeader::SetRoutersSegment(std::vector<Segment> routersSegments)
+{
+    m_routersSegments = routersSegments;
+}
+
+std::vector<Segment>
+Ipv6ExtensionSegmentRoutingHeader::GetRoutersSegments() const
+{
+    return m_routersSegments;
+}
+
+void
+Ipv6ExtensionSegmentRoutingHeader::SetRouterSegment(uint8_t index, Segment addr)
+{
+    m_routersSegments.at(index) = addr;
+}
+
+Segment
+Ipv6ExtensionSegmentRoutingHeader::GetRouterSegment(uint8_t index) const
+{
+    return m_routersSegments.at(index);
+}
+
+void
+Ipv6ExtensionSegmentRoutingHeader::Print(std::ostream& os) const
+{/*
+    os << "( nextHeader = " << (uint32_t)GetNextHeader() << " length = " << (uint32_t)GetLength()
+       << " typeRouting = " << (uint32_t)GetTypeRouting()
+       << " segmentsLeft = " << (uint32_t)GetSegmentsLeft() << " ";
+
+    for (auto it = m_routersSegments.begin(); it != m_routersSegments.end(); it++)
+    {
+        os << *it << " ";
+    }
+
+    os << " )";
+*/}
+
+uint32_t
+Ipv6ExtensionSegmentRoutingHeader::GetSerializedSize() const
+{
+    return 8 + m_routersSegments.size() * 16;
+}
+
+void
+Ipv6ExtensionSegmentRoutingHeader::Serialize(Buffer::Iterator start) const
+{
+    Buffer::Iterator i = start;
+    uint8_t buff[16];
+
+    uint8_t addressNum = m_routersSegments.size();
+
+    i.WriteU8(GetNextHeader());
+    i.WriteU8(addressNum * 2);
+    i.WriteU8(GetTypeRouting());
+    i.WriteU8(GetSegmentsLeft());
+    i.WriteU32(0);
+
+    for (auto it = m_routersSegments.begin(); it != m_routersSegments.end(); it++)
+    {
+        it->Serialize(buff);
+        i.Write(buff, 16);
+    }
+}
+
+uint32_t
+Ipv6ExtensionSegmentRoutingHeader::Deserialize(Buffer::Iterator start)
+{
+    Buffer::Iterator i = start;
+    uint8_t buff[16];
+
+    SetNextHeader(i.ReadU8());
+    m_length = i.ReadU8();
+    SetTypeRouting(i.ReadU8());
+    SetSegmentsLeft(i.ReadU8());
+    i.ReadU32();
+
+    uint8_t addressNum = m_length / 2;
+    SetNumberSegments(addressNum);
+    for (uint8_t index = 0; index < addressNum; index++)
+    {
+        i.Read(buff, 16);
+        SetRouterSegment(index, Segment(buff));
+    }
+
+    return GetSerializedSize();
+}
+
 //MIPv6 Extension ends
 
 NS_OBJECT_ENSURE_REGISTERED(Ipv6ExtensionLooseRoutingHeader);

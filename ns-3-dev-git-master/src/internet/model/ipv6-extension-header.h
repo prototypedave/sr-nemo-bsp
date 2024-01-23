@@ -20,7 +20,13 @@
 #ifndef IPV6_EXTENSION_HEADER_H
 #define IPV6_EXTENSION_HEADER_H
 
-#include "ipv6-option-header.h"
+#include "ns3/ipv6-option-header.h"
+#include "ns3/ipv4-address.h"
+#include "ns3/mac8-address.h"
+
+#include "ns3/address.h"
+#include "ns3/attribute-helper.h"
+#include "segment.h"
 
 #include "ns3/header.h"
 #include "ns3/ipv6-address.h"
@@ -520,6 +526,10 @@ class Ipv6ExtensionRoutingHeader : public Ipv6ExtensionHeader
 };
 
   //MIPv6 Extension starts
+  /**
+  * \ class Segment
+  * \ brief helper class like Address extenstion
+  */
 
   /**
   * \class Ipv6ExtensionType2RoutingHeader
@@ -613,7 +623,110 @@ class Ipv6ExtensionType2RoutingHeader : public Ipv6ExtensionRoutingHeader
     Ipv6Address m_hoa;
 };
 
+
+/**
+ * \ingroup ipv6HeaderExt
+ *
+ * \brief Header of IPv6 Extension Routing : Type 0 (Segment Routing)
+ */
+class Ipv6ExtensionSegmentRoutingHeader : public Ipv6ExtensionRoutingHeader
+{
+
+  public:
+    /**
+     * \brief Get the type identificator.
+     * \return type identificator
+     */
+    static TypeId GetTypeId();
+
+    /**
+     * \brief Get the instance type ID.
+     * \return instance type ID
+     */
+    TypeId GetInstanceTypeId() const override;
+
+    /**
+     * \brief Constructor.
+     */
+    Ipv6ExtensionSegmentRoutingHeader();
+
+    /**
+     * \brief Destructor.
+     */
+    ~Ipv6ExtensionSegmentRoutingHeader() override;
+
+    /**
+     * \brief Set the number of routers' segments.
+     * \param n the number of routers' segments
+     */
+    void SetNumberSegments(uint8_t n);
+
+    /**
+     * \brief Set the vector of routers' address
+     * \param routersSegments the vector of routers's address
+     */
+    void SetRoutersSegment(std::vector<Segment> routersSegments);
+
+    /**
+     * \brief Get the vector of routers' Segments
+     * \return the vector of routers' Segments
+     */
+    std::vector<Segment> GetRoutersSegments() const;
+
+    /**
+     * \brief Set a Router SID.
+     * \param index the index of the SID
+     * \param addr the new SID
+     */
+    void SetRouterSegment(uint8_t index, Segment addr);
+
+    /**
+     * \brief Get a Router SID.
+     * \param index the index of SID
+     * \return the router SID
+     */
+    Segment GetRouterSegment(uint8_t index) const;
+
+    /**
+     * \brief Print some information about the packet.
+     * \param os output stream
+     */
+    void Print(std::ostream& os) const override;
+
+    /**
+     * \brief Get the serialized size of the packet.
+     * \return size
+     */
+    uint32_t GetSerializedSize() const override;
+
+    /**
+     * \brief Serialize the packet.
+     * \param start Buffer iterator
+     */
+    void Serialize(Buffer::Iterator start) const override;
+
+    /**
+     * \brief Deserialize the packet.
+     * \param start Buffer iterator
+     * \return size of the packet
+     */
+    uint32_t Deserialize(Buffer::Iterator start) override;
+
+  private:
+    /**
+     * \brief A vector of IPv6 Address.
+     */
+    typedef std::vector<Segment> VectorSID_t;
+
+    /**
+     * \brief The vector of Routers' IPv6 Address.
+     */
+    VectorSID_t m_routersSegments;
+};
+
+
 //MIPv6 Extension ends
+
 
 /**
  * \ingroup ipv6HeaderExt
@@ -622,6 +735,7 @@ class Ipv6ExtensionType2RoutingHeader : public Ipv6ExtensionRoutingHeader
  */
 class Ipv6ExtensionLooseRoutingHeader : public Ipv6ExtensionRoutingHeader
 {
+
   public:
     /**
      * \brief Get the type identificator.
