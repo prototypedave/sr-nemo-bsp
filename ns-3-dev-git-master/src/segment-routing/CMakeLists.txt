@@ -1,5 +1,5 @@
 build_lib(
-  LIBNAME sr-nemo
+  LIBNAME segment-routing
   SOURCE_FILES
     helper/sr-helper.cc
     model/ar.cc
@@ -17,7 +17,7 @@ build_lib(
     model/sr-option-header.cc
     model/sr-option.cc
     model/sr-tun-l4-protocol.cc
-    model/tunnel-net-device.h
+    model/tunnel-net-device.cc
   HEADER_FILES
     helper/sr-helper.h
     model/bcache.h

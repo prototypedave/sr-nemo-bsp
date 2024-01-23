@@ -86,7 +86,7 @@ class Ipv6Address
     /**
      * \brief Sets an Ipv6Address by parsing the input C-string.
      * \param address the C-string containing the IPv6 address (e.g. 2001:660:4701::1).
-     */
+     */ 
     void Set(const char* address);
 
     /**

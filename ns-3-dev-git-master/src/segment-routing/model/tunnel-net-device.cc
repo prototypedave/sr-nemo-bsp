@@ -297,8 +297,8 @@ TunnelNetDevice::Send (Ptr<Packet> packet, const Address& dest, uint16_t protoco
   packet->PeekHeader (iph);
 
   Ipv6Address a,b;
-  a = iph.GetSourceAddress ();
-  b = iph.GetDestinationAddress ();
+  a = iph.GetSource ();
+  b = iph.GetDestination ();
   NS_LOG_FUNCTION ("Source and Destination Address:" << a << b);
 
   if (a.IsLinkLocal ()
@@ -312,7 +312,7 @@ TunnelNetDevice::Send (Ptr<Packet> packet, const Address& dest, uint16_t protoco
 
     }
   Ptr<Ipv6L3Protocol> ipv6 = GetNode ()->GetObject<Ipv6L3Protocol>();
-  NS_ASSERT (ipv6 != 0 && ipv6->GetRoutingProtocol () != 0);
+  NS_ASSERT (!ipv6 && !ipv6->GetRoutingProtocol ());
   NS_ASSERT ( !m_remoteAddress.IsAny () );
 
   Ipv6Address src = m_localAddress;
@@ -327,10 +327,10 @@ TunnelNetDevice::Send (Ptr<Packet> packet, const Address& dest, uint16_t protoco
       Socket::SocketErrno err;
       Ptr<Ipv6Route> route;
       Ptr<NetDevice> oif (0);     //specify non-zero if bound to a source address
-      header.SetDestinationAddress (dst);
+      header.SetDestination (dst);
       route = ipv6->GetRoutingProtocol ()->RouteOutput (packet, header, oif, err);
 
-      if (route == 0)
+      if (route)
         {
           NS_LOG_LOGIC ("No route for tunnel remote address");
 
@@ -349,8 +349,8 @@ TunnelNetDevice::Send (Ptr<Packet> packet, const Address& dest, uint16_t protoco
       ipv6->Send (packet, src, dst, 41 /* IPv6-in-IPv6 */, 0);
     }
   Ipv6Header oph;
-  oph.SetSourceAddress (src);
-  oph.SetDestinationAddress (dst);
+  oph.SetSource (src);
+  oph.SetDestination (dst);
   m_macTxTrace2 (packet, iph, oph);
   return true;
 }
@@ -364,7 +364,7 @@ TunnelNetDevice::SendFrom (Ptr<Packet> packet, const Address& source, const Addr
   NS_ASSERT (m_supportsSendFrom);
 
   Ptr<Ipv6L3Protocol> ipv6 = GetNode ()->GetObject<Ipv6L3Protocol>();
-  NS_ASSERT (ipv6 != 0 && ipv6->GetRoutingProtocol () != 0);
+  NS_ASSERT (!ipv6 && !ipv6->GetRoutingProtocol ());
   NS_ASSERT ( !m_remoteAddress.IsAny () );
 
   Ipv6Address src = m_localAddress;
@@ -389,10 +389,10 @@ TunnelNetDevice::SendFrom (Ptr<Packet> packet, const Address& source, const Addr
       Ptr<Ipv6Route> route;
       Ptr<NetDevice> oif (0);     //specify non-zero if bound to a source address
 
-      header.SetDestinationAddress (dst);
+      header.SetDestination (dst);
       route = ipv6->GetRoutingProtocol ()->RouteOutput (packet, header, oif, err);
 
-      if (route == 0)
+      if (route)
         {
           NS_LOG_LOGIC ("No route for tunnel remote address");
 

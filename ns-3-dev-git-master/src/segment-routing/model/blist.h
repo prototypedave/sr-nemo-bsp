@@ -24,7 +24,7 @@ public:
    * \param haalist home agent address list
    * \param aralist AR router address list
    */
-  BList (std::list<Ipv6Address> haalist, std::list<Ipv6Address> aralist);
+  BList (std::list<Ipv6Address> haalist);
   /**
    * \brief destructor
    */
@@ -691,7 +691,9 @@ public:
    */
   void SetMobileNetworkPrefix (Ipv6Address prefix);   //NEMO
 
+  void SetARAddressRegistered (bool flag);
 
+  bool IsARAddressRegistered ();
 
 
 private:
@@ -717,6 +719,7 @@ private:
    * \brief tunnel interface index
    */
   int16_t m_tunnelIfIndex;
+
 
   /**
    * \brief home bu packet
@@ -752,6 +755,7 @@ private:
    * \brief CoA
    */
   Ipv6Address m_coa;
+
 
   /**
    * \brief home agent address
@@ -919,6 +923,8 @@ private:
    * \brief home address registered flag
    */
   bool m_HomeAddressRegisteredFlag;
+  
+  bool m_ARAddressRegisteredFlag;
 
   /**
    * \brief Dispose this object.

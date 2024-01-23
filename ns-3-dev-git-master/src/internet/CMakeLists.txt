@@ -120,6 +120,7 @@ set(source_files
     model/tcp-veno.cc
     model/tcp-westwood-plus.cc
     model/tcp-yeah.cc
+    model/segment.cc
     model/udp-header.cc
     model/udp-l4-protocol.cc
     model/udp-socket-factory-impl.cc
@@ -244,6 +245,7 @@ set(header_files
     model/tcp-veno.h
     model/tcp-westwood-plus.h
     model/tcp-yeah.h
+    model/segment.h
     model/udp-header.h
     model/udp-l4-protocol.h
     model/udp-socket-factory.h

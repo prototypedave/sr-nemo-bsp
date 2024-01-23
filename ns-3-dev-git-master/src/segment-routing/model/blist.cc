@@ -51,12 +51,11 @@ void BList::SetNode (Ptr<Node> node)
   m_node = node;
 }
 
-BList::BList (std::list<Ipv6Address> haalist, std::list<Ipv6Address> aralist)
+BList::BList (std::list<Ipv6Address> haalist)
   : m_hstate (UNREACHABLE),
   m_tunnelIfIndex (-1),
   m_hpktbu (0),
   m_HaaList (haalist),
-  m_Aralist (aralist),
   m_hretransTimer (Timer::CANCEL_ON_DESTROY),
   m_hreachableTimer (Timer::CANCEL_ON_DESTROY),
   m_hrefreshTimer (Timer::CANCEL_ON_DESTROY),
@@ -68,6 +67,7 @@ BList::BList (std::list<Ipv6Address> haalist, std::list<Ipv6Address> aralist)
   m_hotiretransTimer (Timer::CANCEL_ON_DESTROY),
   m_cotiretransTimer (Timer::CANCEL_ON_DESTROY),
   m_HomeAddressRegisteredFlag (false),
+  m_ARAddressRegisteredFlag (false),
   m_FlagR(0)  //NEMO
 
 {
@@ -1015,6 +1015,37 @@ Ipv6Address BList::GetMobileNetworkPrefix () const      //NEMO
 void BList::SetMobileNetworkPrefix (Ipv6Address prefix)   // NEMO
 { 
    m_mobilenetworkprefix=prefix;
+}
+
+void BList::SetARAddressRegistered (bool flag)
+{
+  m_ARAddressRegisteredFlag = flag;
+}
+
+bool BList::IsARAddressRegistered ()
+{
+  return m_ARAddressRegisteredFlag;
+}
+
+void BList::ARConnectionTimeout ()
+{
+  NS_LOG_FUNCTION (this);
+
+  if (IsHomeReachable ())
+    {
+      MarkHomeUnreachable ();
+    }
+  else if (IsHomeRefreshing ())
+    {
+      MarkHomeUpdating ();
+    }
+
+
+  //delete routing && tunnel
+  if (m_tunnelIfIndex >= 0)
+    {
+      mn->ClearTunnelAndRouting ();
+    }
 }
 
 
